@@ -1,0 +1,210 @@
+/* --- Variabel Global & Reset Dasar --- */
+:root {
+    --bg-color: #0d0d1a;
+    --primary-color: #1a1a2e;
+    --secondary-color: #2a2a4e;
+    --accent-color: #e0b0ff;
+    --accent-glow: rgba(224, 176, 255, 0.4);
+    --text-color: #c0c0e0;
+    --heading-color: #ffffff;
+    --font-body: 'Poppins', sans-serif;
+    --font-display: 'Great Vibes', cursive;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+    font-family: var(--font-body);
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.8;
+    overflow-x: hidden;
+}
+
+/* --- Preloader, Foto Awal, Partikel --- */
+#preloader {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: var(--bg-color); display: flex; justify-content: center;
+    align-items: center; z-index: 200;
+    transition: opacity 0.75s ease, visibility 0.75s ease;
+}
+.loader {
+    width: 50px; height: 50px; border: 5px solid var(--secondary-color);
+    border-top-color: var(--accent-color); border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+#initial-photo-screen {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background-color: var(--bg-color); z-index: 150; cursor: pointer;
+    transition: opacity 1.5s ease-in-out, transform 1.5s ease-in-out;
+}
+#initial-photo-screen.hidden { opacity: 0; transform: scale(1.1); pointer-events: none; }
+#initial-photo-screen img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
+.continue-text {
+    position: absolute; bottom: 5%; left: 50%; transform: translateX(-50%);
+    color: white; background-color: rgba(0, 0, 0, 0.3); padding: 0.5rem 1rem;
+    border-radius: 20px; font-size: 0.9rem; text-shadow: 0 0 5px black;
+    animation: pulse 2.5s infinite;
+}
+@keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
+
+#particle-container {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    z-index: -1; background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+    overflow: hidden;
+}
+
+/* --- Halaman Sampul (Cover Undangan) --- */
+.cover-container {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.8));
+    display: flex; justify-content: center; align-items: center; text-align: center;
+    z-index: 100; padding: 1rem;
+    opacity: 0; visibility: hidden;
+    transition: opacity 1.5s ease-in, visibility 1.5s ease-in;
+}
+.cover-container.visible { opacity: 1; visibility: visible; }
+.cover-container.hidden { 
+    transition: opacity 1s ease-out, visibility 1s ease-out;
+    opacity: 0; visibility: hidden; 
+}
+.cover-content h1 {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 12vw, 6rem); color: var(--heading-color);
+    text-shadow: 0 0 5px var(--accent-glow), 0 0 15px var(--accent-glow), 0 0 25px var(--accent-glow);
+    margin: 1rem 0;
+}
+.cover-content p { font-size: clamp(1rem, 3vw, 1.2rem); color: var(--text-color); }
+#open-button {
+    margin-top: 2rem; padding: 1rem 2rem; font-size: 1rem;
+    font-family: var(--font-body); background-color: var(--accent-color);
+    color: #1a1a2e; border: none; border-radius: 50px; cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; font-weight: 600;
+}
+#open-button:hover { transform: scale(1.05); box-shadow: 0 0 25px var(--accent-glow); }
+
+/* --- Konten Utama --- */
+.main-content {
+    opacity: 0; visibility: hidden; transition: opacity 1.5s ease-in;
+    position: relative; z-index: 10;
+}
+.main-content.visible { opacity: 1; visibility: visible; }
+section {
+    padding: 5rem 2rem; max-width: 1100px; margin: 0 auto; overflow: hidden;
+}
+
+/* --- Carousel Layar Penuh --- */
+.photo-carousel-section-fullscreen {
+    padding: 0;
+    max-width: 100%; /* Menghapus batasan lebar */
+    height: 100vh; /* Tinggi carousel memenuhi layar */
+    margin: 5rem 0;
+}
+#kenanganCarousel, .carousel-inner, .carousel-item {
+    height: 100%;
+}
+.carousel-item img, .carousel-item video {
+    height: 100%; /* Tinggi gambar/video memenuhi tinggi carousel */
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
+    filter: brightness(0.8); /* Membuat media sedikit lebih gelap */
+}
+.carousel-caption {
+    display: none !important;
+}
+
+/* --- Tampilan Teks dan Judul --- */
+.hero-section {
+    text-align: center;
+}
+.wishes-section .section-intro {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+.wish-card {
+    background: linear-gradient(145deg, var(--primary-color), #21213a);
+    padding: 2.5rem 2rem; border-radius: 20px;
+    border: 1px solid var(--secondary-color); text-align: left; /* Teks doa rata kiri */
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+.wish-card:hover { transform: translateY(-15px); box-shadow: 0 15px 40px rgba(224, 176, 255, 0.1); }
+.wish-icon { 
+    font-size: 1.6rem; color: var(--accent-color); 
+    margin-bottom: 1.5rem; font-weight: 600;
+}
+.wish-icon h3 {
+    font-size: 1.6rem;
+    display: inline;
+}
+.wish-card p { font-size: 1.05rem; }
+.wishes-grid {
+    display: grid; grid-template-columns: 1fr; /* Doa ditampilkan satu per satu ke bawah */
+    gap: 2rem;
+}
+
+/* --- Galeri dan Video --- */
+.media-section { padding-top: 0; }
+.gallery-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+.gallery-item {
+    border-radius: 15px;
+    overflow: hidden;
+}
+.gallery-item img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform 0.4s ease;
+}
+.gallery-item:hover img { transform: scale(1.05); }
+.video-wrapper video { width: 100%; border-radius: 15px; }
+
+/* --- Penutup --- */
+.closing-section {
+    text-align: center; background: linear-gradient(to top, #0d0d1a, transparent);
+    padding: 6rem 2rem;
+}
+.closing-text h2 { font-size: clamp(2rem, 8vw, 4rem); color: var(--accent-color); }
+.closing-text h3 {
+    margin-top: 2rem; font-weight: 600;
+    color: var(--heading-color); font-size: 1.5rem;
+}
+
+/* ===== STYLE BARU UNTUK TOMBOL WHATSAPP ===== */
+.whatsapp-btn {
+    display: inline-block;
+    padding: 1rem 1.5rem;
+    margin-top: 2.5rem;
+    background-color: #25D366; /* Warna hijau WhatsApp */
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    border-radius: 50px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.whatsapp-btn:hover {
+    color: white;
+    transform: scale(1.05);
+    box-shadow: 0 5px 20px rgba(37, 211, 102, 0.4);
+}
+.whatsapp-btn .fa-brands {
+    margin-right: 0.75rem;
+    font-size: 1.2rem;
+}
+
+/* --- Animasi & Responsif --- */
+.animate-on-scroll {
+    opacity: 0; transform: translateY(40px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    transition-delay: var(--delay, 0s);
+}
+.animate-on-scroll.is-visible { opacity: 1; transform: translateY(0); }
+
+@media (max-width: 768px) {
+    section { padding: 4rem 1.5rem; }
+    .photo-carousel-section-fullscreen { height: 60vh; margin: 3rem 0; }
+    .closing-text h2 { font-size: 2.5rem; }
+    .whatsapp-btn { font-size: 0.9rem; padding: 0.8rem 1.2rem; }
+}
